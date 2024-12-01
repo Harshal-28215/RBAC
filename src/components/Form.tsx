@@ -39,12 +39,30 @@ export default function MyForm() {
 
   const form = useForm < z.infer < typeof formSchema >> ({
     resolver: zodResolver(formSchema),
-
+    defaultValues: {
+      UserName: "",
+      email: "",
+      Password: "",
+      ConfirmPassword: "",
+    },
   })
 
-  function onSubmit(values: z.infer < typeof formSchema > ) {
+ async function onSubmit(values: z.infer < typeof formSchema > ) {
+
+  const data = {
+    email: values.email,
+    password: values.Password,
+  }
+
     try {
-      console.log(values);
+      await fetch("http://localhost:5000/api/register/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
       toast(
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(values, null, 2)}</code>
