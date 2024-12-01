@@ -4,6 +4,7 @@ import cors from 'cors'
 import connectToMongo from './db.js'
 import register from './Routes/register.js'
 import login from './Routes/login.js'
+import blog from './Routes/blog.js'
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.json())
 
 app.use('/api/register', register)
 app.use('/api/login', login)
+app.use('/api/blog', blog)
 
 app.listen(port, () => {
   console.log(`CodeGeni app backend listening on port at http://localhost:${port}`)
