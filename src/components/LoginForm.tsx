@@ -27,23 +27,22 @@ import {
 import {
   PasswordInput
 } from "@/components/ui/password-input"
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
-  UserName: z.string().min(3),
   email: z.string(),
   Password: z.string(),
-  ConfirmPassword: z.string()
 });
 
-export default function MyForm() {
+export default function LoginForm() {
+
+  const router = useRouter();
 
   const form = useForm < z.infer < typeof formSchema >> ({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      UserName: "",
       email: "",
       Password: "",
-      ConfirmPassword: "",
     },
   })
 
@@ -55,13 +54,19 @@ export default function MyForm() {
   }
 
     try {
-      await fetch("http://localhost:5000/api/register/register", {
+      const response = await fetch("http://localhost:5000/api/login/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials:'include',
       });
+
+      const Logindata = await response.json();
+       if (Logindata.message) {
+        router.push('/')
+       }
 
       toast(
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
@@ -77,24 +82,6 @@ export default function MyForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-3xl mx-auto py-10">
-        
-        <FormField
-          control={form.control}
-          name="UserName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>UserName</FormLabel>
-              <FormControl>
-                <Input 
-                placeholder="Name"
-                
-                type="text"
-                {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         
         <FormField
           control={form.control}
@@ -123,21 +110,6 @@ export default function MyForm() {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <PasswordInput placeholder="Password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        
-        <FormField
-          control={form.control}
-          name="ConfirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <PasswordInput placeholder="Confirm Password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

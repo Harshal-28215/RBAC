@@ -1,11 +1,12 @@
+import LoginForm from '@/components/LoginForm'
 import React from 'react'
 
 function page() {
-  return (
-    <div>
-      
-    </div>
-  )
+    return (
+        <>
+            <LoginForm />
+        </>
+    )
 }
 
 export default page

@@ -8,14 +8,34 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
+  try {
+
   const user = await User.findOne({ email });
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return res.status(401).send('Invalid credentials');
   }
 
-  // Generate JWT
-  const token = jwt.sign({ id: user._id, role: user.role }, 'secretKey', { expiresIn: '1h' });
-  res.json({ token });
+  const token = jwt.sign({ email: user.email, role: user.role },'secretKey', { expiresIn: '1h' });
+  
+
+  res.cookie('token', token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'Strict',
+    maxAge: 3600000,
+  });
+
+  res.status(200).json({
+    message: 'Login successful',
+  });
+} catch (error) {
+    res.status(500).send('error login user');  
+}
+});
+
+router.post('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.status(200).send('Logged out');
 });
 
 export default router;
