@@ -1,50 +1,43 @@
 "use client"
 
-import { useUser } from '@/context/context'
 import Link from 'next/link'
 import React from 'react'
+import { useUser } from '@/context/context';
 
 function Navbar() {
 
-    const context = useUser();
-    const { user } = context;
+  const { user, setUser } = useUser();
 
-    const classname = 'border-2 rounded-md px-3 py-2'
 
-    async function logout() {
-        const response = await fetch('http://localhost:5000/api/login/logout', {
-          method: 'POST',
-          credentials: 'include',
-        });
-      
-        console.log(response);
-        
+  async function logout() {
+    const response = await fetch('http://localhost:5000/api/login/logout', {
+      method: 'POST',
+      credentials: 'include',
+    });
 
-        if (response.ok) {
-          console.log('Logged out');
-        } else {
-          console.error('Logout failed');
-        }
+    if (response.ok) {
+      setUser(null);
+    }
+  }
+
+  const classname = 'border-2 rounded-md px-3 py-2'
+  return (
+    <nav className='p-4 space-x-1 flex items-center gap-4'>
+      {user ?
+        <>
+          <h1>email: {user.email}</h1>
+          <h1>role: {user.role}</h1>
+          <button className={user ? `${classname}` : 'hidden'} onClick={logout}>Logout</button>
+        </>
+        :
+        <>
+          <Link href='/login' className={classname}>Login</Link>
+          <Link href='/signup' className={classname}>Signup</Link>
+        </>
       }
 
-    return (
-        <nav className='p-4 space-x-1 flex items-center gap-4'>
-            {user ?
-                <div className='flex gap-3'>
-                    <button className={classname} onClick={logout}>Logout</button>
-                    <p>email: {user?.email}</p>
-                    <p>role:{user?.role}</p>
-                </div>
-                :
-                <>
-                    <Link href='/login' className={classname}>Login</Link>
-                    <Link href='/signup' className={classname}>Signup</Link>
-                </>
-
-            }
-
-        </nav>
-    )
+    </nav>
+  )
 }
 
 export default Navbar

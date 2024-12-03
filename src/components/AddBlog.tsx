@@ -28,46 +28,47 @@ import {
   PasswordInput
 } from "@/components/ui/password-input"
 import { useRouter } from 'next/navigation';
+import { useUser } from "@/context/context"
 
 const formSchema = z.object({
-  UserName: z.string().min(3),
-  email: z.string(),
-  Password: z.string(),
-  ConfirmPassword: z.string()
+  title: z.string(),
+  content: z.string(),
 });
 
-export default function SignupForm() {
+export default function BlogForm() {
+  const { user } = useUser();
+
   const router = useRouter();
 
   const form = useForm < z.infer < typeof formSchema >> ({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      UserName: "",
-      email: "",
-      Password: "",
-      ConfirmPassword: "",
+      title: "",
+      content: "",
     },
   })
 
  async function onSubmit(values: z.infer < typeof formSchema > ) {
 
   const data = {
-    email: values.email,
-    password: values.Password,
+    title: values.title,
+    content: values.content,
+    id: user?.id
   }
 
     try {
-      const response = await fetch("http://localhost:5000/api/register/register", {
+      const response = await fetch("http://localhost:5000/api/blog/blog", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials:'include',
       });
 
-      if (response.ok) {
-        router.push('/login')
-      }
+      const blog = await response.json();
+       console.log(blog);
+       
 
       toast(
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
@@ -86,33 +87,15 @@ export default function SignupForm() {
         
         <FormField
           control={form.control}
-          name="UserName"
+          name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>UserName</FormLabel>
+              <FormLabel>title</FormLabel>
               <FormControl>
                 <Input 
-                placeholder="Name"
+                placeholder="title"
                 
                 type="text"
-                {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input 
-                placeholder="Email"
-                
-                type="email"
                 {...field} />
               </FormControl>
               
@@ -123,27 +106,16 @@ export default function SignupForm() {
         
         <FormField
           control={form.control}
-          name="Password"
+          name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>content</FormLabel>
               <FormControl>
-                <PasswordInput placeholder="Password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        
-        <FormField
-          control={form.control}
-          name="ConfirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <PasswordInput placeholder="Confirm Password" {...field} />
+              <Input 
+                placeholder="content"
+                
+                type="text"
+                {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

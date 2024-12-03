@@ -13,7 +13,7 @@ router.get('/user', (req, res) => {
   
     try {
       const user = jwt.verify(token, 'secretKey');
-      res.json({ email: user.email, role: user.role });
+      res.json({ email: user.email, role: user.role, id: user.id });
     } catch (err) {
       res.status(403).json({ error: 'Invalid token' });
     }

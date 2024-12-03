@@ -1,27 +1,23 @@
-"use client"
+'use client';
 
-import { useUser } from '@/context/context';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import Blog from "@/components/Blog";
+import { useUser } from "@/context/context";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  const { user, loading } = useUser();  // Destructure loading from context
-  const router = useRouter();
+  const { user, isloading } = useUser();
+  
+  if (isloading) {
+    return <h1>loading...</h1>   
+  }
 
-  useEffect(() => {
-    if (!loading && user === null) {
-      // Wait until loading is false, then redirect if user is not found
-      router.push('/login');
-    }
-  }, [user, loading, router]);
-
-  if (loading) {
-    return <div>Loading...</div>;  // Render loading state until data is fetched
+  if (!user) {
+    redirect('/login');
   }
 
   return (
     <div>
-      <h1>Hello, {user ? user.name : 'Guest'}</h1>
+      {user && <Blog user={user}/>}
     </div>
   );
 }

@@ -2,44 +2,61 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-const UserContext = createContext<{ user: any; setUser: React.Dispatch<React.SetStateAction<any>>; loading: boolean }>({
-  user: null,
-  setUser: () => {},
-  loading: true, // Initially, the loading state will be true
-});
+// Define the type for your context value
+type UserContextValue = {
+    user: {email:string, role:string, id:string} | null;
+    setUser: React.Dispatch<React.SetStateAction<{ email: string; role: string; id: string; } | null>>;
+    isloading: boolean;
+};
 
-import { ReactNode } from 'react';
+// Create the initial context value
+const initialContextValue: UserContextValue = {
+    user: null,
+    setUser: () => {},
+    isloading: true
+};
 
-export function UserProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+// Create the context
+export const UserContext = createContext<UserContextValue>(initialContextValue);
 
-  useEffect(() => {
-    async function fetchUserDetails() {
-      const response = await fetch('http://localhost:5000/api/user/user', {
-        method: 'GET',
-        credentials: 'include',
-        cache: 'no-cache',
-      });
+// Create the context provider component
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [user, setUser] = useState(initialContextValue.user);
+    const [isloading, setIsLoading] = useState(initialContextValue.isloading);
 
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-      } else {
-        setUser(null);
+    useEffect(() => {
+      async function getUser () {
+        const response = await fetch('http://localhost:5000/api/user/user', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        
+        const user = await response.json();
+        
+        if (user.email) {
+          setUser(user);
+        }
+        setIsLoading(false);
       }
-      setLoading(false); // Once the fetch is complete, set loading to false
-    }
 
-    fetchUserDetails();
-  }, []);
-
-  return (
-    <UserContext.Provider value={{ user, setUser, loading }}>
-      {children}
-    </UserContext.Provider>
-  );
-}
+      getUser();
+    }, [])
+    
+    
+    
+    // Create the context value object
+    const contextValue: UserContextValue = {
+        user,
+        setUser,
+        isloading
+    };
+    
+    return (
+        <UserContext.Provider value={contextValue}>
+            {children}
+        </UserContext.Provider>
+    );
+};
 
 export function useUser() {
   return useContext(UserContext);

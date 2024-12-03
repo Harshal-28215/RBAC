@@ -28,6 +28,7 @@ import {
   PasswordInput
 } from "@/components/ui/password-input"
 import { useRouter } from 'next/navigation';
+import { useUser } from "@/context/context"
 
 const formSchema = z.object({
   email: z.string(),
@@ -35,6 +36,8 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
+
+  const { setUser } = useUser();
 
   const router = useRouter();
 
@@ -65,6 +68,8 @@ export default function LoginForm() {
 
       const Logindata = await response.json();
        if (Logindata.message) {
+
+        setUser({ email: values.email, role: Logindata.role, id: Logindata.id });
         router.push('/')
        }
 

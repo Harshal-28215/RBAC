@@ -15,7 +15,7 @@ router.post('/login', async (req, res) => {
     return res.status(401).send('Invalid credentials');
   }
 
-  const token = jwt.sign({ email: user.email, role: user.role },'secretKey', { expiresIn: '1h' });
+  const token = jwt.sign({ email: user.email, role: user.role, id:user._id },'secretKey', { expiresIn: '1h' });
   
 
   res.cookie('token', token, {
@@ -27,8 +27,11 @@ router.post('/login', async (req, res) => {
 
   res.status(200).json({
     message: 'Login successful',
+    role: user.role,
+    id: user._id
   });
-} catch (error) {
+} 
+catch (error) {
     res.status(500).send('error login user');  
 }
 });

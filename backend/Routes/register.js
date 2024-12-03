@@ -11,7 +11,7 @@ router.post('/register', async (req, res) => {
 
   const user = new User({ email, password: hashedPassword });
   await user.save();
-  res.status(201).send('User registered');
+  res.status(201).json({message: 'signup successful',});
 });
 
 export default router;
