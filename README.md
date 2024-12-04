@@ -39,3 +39,11 @@ This is role based access control blog app which has 3 role admin,moderator, and
 Admin can edit or delete any blog,
 Moderator can edit any blog but cant delete it,
 User can edit and delete blog of it's own only.
+
+login info.
+theres three user
+user:{email:user@gmail.com, password:user}, 
+user2:{email:user2@gmail.com, password:user}, 
+user3:{email:user3@gmail.com, password:user}, 
+moderator:{email:moderator@gmail.com, password:moderator}, 
+admin:{email:admin@gmail.com, password:admin}
