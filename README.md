@@ -36,6 +36,6 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 This is role based access control blog app which has 3 role admin,moderator, and user
 
-Admin can edit or delete any blog
-Moderator can edit any blog but cant delete it
-User can edit and delete blog of it's own only
+Admin can edit or delete any blog,
+Moderator can edit any blog but cant delete it,
+User can edit and delete blog of it's own only.
