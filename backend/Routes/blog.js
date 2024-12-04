@@ -25,4 +25,10 @@ router.put('/blog/:id',authenticate,authorize(['admin','moderator']), async (req
 
     res.json(blog);
 });
+
+router.delete('/blog/:id',authenticate,authorize(['admin']), async (req, res) => {
+    const blog = await Blog.findByIdAndDelete(req.params.id, req.body, { new: true });
+
+    res.json(blog);
+});
 export default router;

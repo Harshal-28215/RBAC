@@ -2,6 +2,8 @@ import Blog from "../schema/Blog.js";
 
 const authorize = (roles) => async (req, res, next) => {
    const { role } = req.user;
+   console.log(req.user);
+   
 
    if (role == 'user') {
     const getBlog = await Blog.findById(req.params.id);
