@@ -10,7 +10,7 @@ function Navbar() {
 
 
   async function logout() {
-    const response = await fetch('http://localhost:5000/api/login/logout', {
+    const response = await fetch('http://localhost:5000/api/logout', {
       method: 'POST',
       credentials: 'include',
     });

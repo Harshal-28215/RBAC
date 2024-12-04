@@ -18,7 +18,7 @@ function DeleteBlog({ blog }: { blog: blog }) {
 
   async function deleteBlog() {
     try {
-      const response = await fetch(`http://localhost:5000/api/blog/blog/${blog._id}`, {
+      const response = await fetch(`http://localhost:5000/api/blog/${blog._id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

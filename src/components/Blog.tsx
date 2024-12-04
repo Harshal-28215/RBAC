@@ -16,7 +16,7 @@ function Blog({ user }: { user: { email: string, role: string, id: string } }) {
         if (user) {
 
             async function getBlog() {
-                const response = await fetch('http://localhost:5000/api/blog/blog', {
+                const response = await fetch('http://localhost:5000/api/blog', {
                     method: 'GET',
                     credentials: 'include',
                 });

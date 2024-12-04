@@ -26,7 +26,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     useEffect(() => {
       async function getUser () {
-        const response = await fetch('http://localhost:5000/api/user/user', {
+        const response = await fetch('http://localhost:5000/api/user', {
           method: 'GET',
           credentials: 'include',
         });
