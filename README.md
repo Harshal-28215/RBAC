@@ -2,7 +2,12 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run npm intall in both main file and /backendfile
+First, run this command in both main file and /backendfile
+
+```bash
+npm install
+```
+
 Then, run the development server:
 
 For Front End
