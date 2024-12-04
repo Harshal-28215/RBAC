@@ -34,7 +34,7 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-This is role based access control blog app which has 3 role admin,moderator, and user.
-Admin can edit or delete any blog
+This is role based access control blog app which has 3 role admin,moderator, and user./n
+Admin can edit or delete any blog/n
 Moderator can edit any blog but cant delete it
 User can edit and delete blog of it's own only
